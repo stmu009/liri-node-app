@@ -5,6 +5,8 @@ var Twitter = require("twitter");
 
 var request = require("request");
 
+var fs = require("fs");
+
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 
@@ -21,7 +23,7 @@ for (var i = 3; i < nodeArgs.length; i++) {
 console.log("request me type:", requestType);
 console.log("request input:", requestInput);
 
-var spotifyThis = function () {
+var spotifyThis = function (requestInput) {
     if (requestInput === "") {
         requestInput = "The Sign Ace of Base"
     }
@@ -35,7 +37,7 @@ var spotifyThis = function () {
             var song = JSON.stringify(response.tracks.items[0].name);
             var preview = JSON.stringify(response.tracks.items[0].album.external_urls.spotify);
             var album = JSON.stringify(response.tracks.items[0].album.name);
-            console.log(JSON.stringify(response.tracks.items[0], null, 2))
+            // console.log(JSON.stringify(response.tracks.items[0], null, 2))
 
             console.log(`
     Artist(s): ${artist}
@@ -101,6 +103,14 @@ Actors:                 ${JSON.parse(body).Actors}
 
 var doWhat = function () {
     console.log("do what it says");
+    fs.readFile("./random.txt", function read(err, data){
+        var array = data.toString().split(",")
+        for (let index = 1; index < array.length; index++) {
+            requestInput = requestInput + array[index];
+            
+        }
+        spotifyThis(requestInput);
+    } )
 }
 
 
@@ -109,7 +119,7 @@ switch (requestType) {
         myTweets();
         break;
     case 'spotify-this-song':
-        spotifyThis();
+        spotifyThis(requestInput);
         break;
     case 'movie-this':
         movieThis();
