@@ -3,6 +3,8 @@ var keys = require("./keys.js")
 var Spotify = require("node-spotify-api");
 var Twitter = require("twitter");
 
+var request = require("request");
+
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 
@@ -64,14 +66,37 @@ var myTweets = function () {
                     '-----------\n';
             }
             console.log(outputStr);
+        } else {
+            console.log("Tweet Error....!!!!");
         }
-        else{console.log("Tweet Error....!!!!");}
     });
 }
 
 
 var movieThis = function () {
     console.log("Movie This:");
+    if (requestInput === "") {
+        requestInput = "Mr. Nobody"
+    }
+
+    var queryUrl = "http://www.omdbapi.com/?t=" + requestInput + "&y=&plot=short&apikey=trilogy";
+
+    request(queryUrl, function (err, res, body) {
+        console.log("before if");
+        if (!err && res.statusCode === 200) {
+            console.log(
+`   
+Title:                  ${JSON.parse(body).Title}
+Release Year:           ${JSON.parse(body).Year}
+Rotten Tomatoes Rating: ${JSON.parse(body).Ratings[1].Value}
+IMDB Rating:            ${JSON.parse(body).imdbRating}
+Country:                ${JSON.parse(body).Country}
+Language:               ${JSON.parse(body).Language}
+Plot:                   ${JSON.parse(body).Plot}
+Actors:                 ${JSON.parse(body).Actors}
+`);
+        }
+    });
 }
 
 var doWhat = function () {
