@@ -20,7 +20,9 @@ console.log("request me type:", requestType);
 console.log("request input:", requestInput);
 
 var spotifyThis = function () {
-    if (requestInput === ""){requestInput="The Sign Ace of Base"} 
+    if (requestInput === "") {
+        requestInput = "The Sign Ace of Base"
+    }
     spotify
         .search({
             type: 'track',
@@ -44,15 +46,35 @@ var spotifyThis = function () {
         })
 };
 
-var myTweets = function(){
+var myTweets = function () {
     console.log(`Tweets:`);
+
+    var params = {
+        screen_name: 'stmu009',
+        count: 20
+    };
+
+
+    client.get('statuses/user_timeline', params, function (error, tweets, response) {
+        if (!error) {
+            var outputStr = '------------'
+            for (var i = 0; i < tweets.length; i++) {
+                outputStr += 'Created on: ' + tweets[i].created_at + '\n' +
+                    'Tweet content: ' + tweets[i].text + '\n' +
+                    '-----------\n';
+            }
+            console.log(outputStr);
+        }
+        else{console.log("Tweet Error....!!!!");}
+    });
 }
 
-var movieThis = function() {
+
+var movieThis = function () {
     console.log("Movie This:");
 }
 
-var doWhat = function() {
+var doWhat = function () {
     console.log("do what it says");
 }
 
